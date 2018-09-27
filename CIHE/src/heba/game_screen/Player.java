@@ -12,14 +12,14 @@ import javax.imageio.ImageIO;
 
 import heba.display.Display;
 
-public class Player implements KeyListener 
+public class Player implements KeyListener
 {
-
 	private final double speed = 5.0d;
+	private int health;
 	
 	private BufferedImage pSprite;
 	private Rectangle rect;
-	private double xPos, yPos;
+	private double xPos, yPos, startXPos, startYPos;
 	private int width, height;
 	private BasicBlocks blocks;
 	
@@ -27,96 +27,131 @@ public class Player implements KeyListener
 	
 	public PlayerWeapons playerWeapons;
 	
-	public Player(double xPos, double yPos, int width, int height, BasicBlocks blocks) 
+	public Player(double xPos, double yPos, int width, int height, BasicBlocks blocks)
 	{
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.startXPos = xPos;
+		this.startYPos = yPos;
 		this.width = width;
 		this.height = height;
+		this.health = 3;
 		
-		rect = new Rectangle((int) xPos, (int) yPos, width, height);
+		rect = new Rectangle((int) xPos,(int) yPos+25, width, height-25);
 		
-		try 
+		try
 		{
-			URL url = this.getClass().getResource("/heba/images/hebachicken.png");
+			URL url = this.getClass().getResource("/heba/images/pl2.png");
 			pSprite = ImageIO.read(url);
-		}catch(IOException e){}; 
+		}catch(IOException e){};
 		
 		this.blocks = blocks;
-		
 		playerWeapons = new PlayerWeapons();
-		
 	}
 	
-	public void draw(Graphics2D g) 
+	public void draw(Graphics2D g)
 	{
 		g.drawImage(pSprite,(int) xPos,(int) yPos, width, height, null);
 		playerWeapons.draw(g);
 	}
 	
-	public void update(double delta) 
+	public void update(double delta)
 	{
-		if(right && !left && xPos < Display.WIDTH - width) 
+		if(right && !left && xPos < Display.WIDTH-width)
 		{
 			xPos += speed * delta;
 			rect.x = (int) xPos;
 		}
-		if(!right && left && xPos > 10) 
+		if(!right && left && xPos > 10)
 		{
 			xPos -= speed * delta;
 			rect.x = (int) xPos;
 		}
+		
 		playerWeapons.update(delta, blocks);
 		
-		if(shoot) 
+		if(shoot)
 		{
-			playerWeapons.shootBullet(xPos, yPos, 20, 20);
+			playerWeapons.shootBullet(xPos, yPos, 50, 50);
 		}
 	}
 	
 	@Override
-	public void keyTyped(KeyEvent e) 
-	{
-		
-	}
-
-	@Override
-	public void keyPressed(KeyEvent e) 
+	public void keyPressed(KeyEvent e)
 	{
 		int key = e.getKeyCode();
-		if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) 
+		
+		if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT)
 		{
 			right = true;
 		}
-		else if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) 
+		else if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT)
 		{
 			left = true;
 		}
-		else if(key == KeyEvent.VK_SPACE) 
+		
+		if (key == KeyEvent.VK_SPACE)
 		{
 			shoot = true;
 		}
-	
-		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) 
 	{
 		int key = e.getKeyCode();
-		if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) 
+		if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT)
 		{
 			right = false;
 		}
-		else if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) 
+		else if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT)
 		{
 			left = false;
 		}
-		else if(key == KeyEvent.VK_SPACE) 
+		
+		if (key == KeyEvent.VK_SPACE)
 		{
 			shoot = false;
 		}
-
 	}
 
+	@Override
+	public void keyTyped(KeyEvent e) 
+	{
+		
+	}
+	
+	public void hit() 
+	{
+		setHealth(getHealth()-1);
+	}
+	
+	public int getHealth() 
+	{
+		return health;
+	}
+	
+	public void setHealth(int health) 
+	{
+		this.health = health;
+	}
+
+	public Rectangle getRect()
+	{
+		return rect;
+	}
+
+	public void reset() 
+	{
+		health = 3;
+		left = false;
+		right = false;
+		shoot = false;
+		
+		xPos = startXPos;
+		yPos = startYPos;
+		rect.x = (int) xPos;
+		rect.y = (int) yPos+25;
+		playerWeapons.reset();
+	}
 }

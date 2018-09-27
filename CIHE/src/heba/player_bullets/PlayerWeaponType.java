@@ -1,12 +1,13 @@
 package heba.player_bullets;
 
+
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import heba.game_screen.BasicBlocks;
 
-public abstract class PlayerWeaponType
+public abstract class PlayerWeaponType 
 {
 	protected double xPos, yPos;
 	protected int width, height;
@@ -15,11 +16,10 @@ public abstract class PlayerWeaponType
 	public abstract void update(double delta, BasicBlocks blocks);
 	public abstract boolean collisionRect(Rectangle rect);
 	public abstract boolean collisionPoly(Polygon poly);
-	public abstract boolean destroy();
+	public abstract boolean destory();
 	
 	protected abstract void wallCollide(BasicBlocks blocks);
 	protected abstract void isOutofBounds();
-	
 	
 	public double getxPos() 
 	{
@@ -37,7 +37,7 @@ public abstract class PlayerWeaponType
 	{
 		this.yPos = yPos;
 	}
-	public int getWidth() 
+	public int getWidth()
 	{
 		return width;
 	}
@@ -49,10 +49,8 @@ public abstract class PlayerWeaponType
 	{
 		return height;
 	}
-	public void setHeight(int height) 
+	public void setHeight(int height)
 	{
 		this.height = height;
 	}
-	
-	
 }

@@ -9,10 +9,11 @@ import javax.swing.JFrame;
 
 import heba.state.StateMachine;
 
-public class Display extends Canvas implements Runnable
+public class Display extends Canvas implements Runnable 
 {
+	private static final long serialVersionUID = 1L;
 
-	public static void main(String [] args) 
+	public static void main(String[] args) 
 	{
 		Display display = new Display();
 		JFrame frame = new JFrame();
@@ -23,58 +24,53 @@ public class Display extends Canvas implements Runnable
 		frame.setResizable(false);
 		frame.setVisible(true);
 		display.start();
-		
 	}
-	
+
 	private boolean running = false;
 	private Thread thread;
-	
-	
-	//synchronized shares resources 
+
 	public synchronized void start() 
 	{
-		if(running)
+		if (running)
 			return;
-		
+
 		running = true;
-		
+
 		thread = new Thread(this);
 		thread.start();
 	}
-	
-	public synchronized void stop()
+
+	public synchronized void stop() 
 	{
-		if(!running)
+		if (!running)
 			return;
-		
+
 		running = false;
+
 		try 
 		{
 			thread.join();
-		} 
+		}
 		catch (InterruptedException e) 
 		{
 			e.printStackTrace();
 		}
-		
 	}
-	
-	//practically everything is based of this size interms of images and objects
+
 	public static int WIDTH = 800, HEIGHT = 600;
-	public int FPS; 
-	
+	public int FPS;
+
 	public static StateMachine state;
-	
-	
-	public Display() 
+
+	public Display()
 	{
 		this.setSize(WIDTH, HEIGHT);
 		this.setFocusable(true);
-		
+
 		state = new StateMachine(this);
-		state.setState((byte) 0);
+		state.setState((byte) 0); 
 	}
-	
+
 	@Override
 	public void run() 
 	{
@@ -83,68 +79,57 @@ public class Display extends Canvas implements Runnable
 		final int TARGET_FPS = 60;
 		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
 		int frames = 0;
-		
+
 		this.createBufferStrategy(3);
 		BufferStrategy bs = this.getBufferStrategy();
-		
-		while(running) 
-		{
+		while (running) {
 			long now = System.nanoTime();
 			long updateLength = now - lastLoopTime;
 			lastLoopTime = now;
-			double delta = updateLength / ((double)OPTIMAL_TIME);
-			
+			double delta = updateLength / ((double) OPTIMAL_TIME);
+
 			frames++;
-			
-			if(System.currentTimeMillis() - timer > 1000) 
+
+			if (System.currentTimeMillis() - timer > 1000)
 			{
 				timer += 1000;
 				FPS = frames;
 				frames = 0;
 				System.out.println(FPS);
 			}
-			
+
 			draw(bs);
 			update(delta);
-			
+
 			try 
 			{
 				Thread.sleep(((lastLoopTime - System.nanoTime()) + OPTIMAL_TIME) / 1000000);
-			}
-			catch(Exception e) 
-			{
-				
-			};
-			
+			} 
+			catch (Exception e) {};
 		}
-		
 	}
-	
-	public void draw(BufferStrategy bs)
+
+	public void draw(BufferStrategy bs) 
 	{
-		//way to use buffered img to stop flickering 
 		do 
 		{
-			do 
+			do
 			{
-			Graphics2D g = (Graphics2D)bs.getDrawGraphics(); 
-			g.setColor(Color.BLACK);
-			g.fillRect(0, 0, WIDTH + 50, HEIGHT + 50); //works without the 50 may remove padding later
-			
-			state.draw(g);
-			
-			g.dispose(); //returns resources 
-			}while(bs.contentsRestored());
-			bs.show(); //when done will show current drawing
-		}while(bs.contentsLost());
-		
+				Graphics2D g = (Graphics2D) bs.getDrawGraphics();
+				g.setColor(Color.PINK);
+				g.fillRect(0, 0, WIDTH + 50, HEIGHT + 50);
+				
+				state.draw(g);
+
+				g.dispose();
+			} while (bs.contentsRestored());
+			bs.show();
+		}
+		while (bs.contentsLost());
 	}
-	
+
 	public void update(double delta) 
 	{
 		state.update(delta);
 	}
-	
-	
-	
 }

@@ -9,7 +9,7 @@ public class BasicBlocks
 {
 	public ArrayList<Rectangle> wall = new ArrayList<Rectangle>();
 	
-	public BasicBlocks() 
+	public BasicBlocks()
 	{
 		basicBlocks(75, 450);
 		basicBlocks(275, 450);
@@ -17,62 +17,57 @@ public class BasicBlocks
 		basicBlocks(675, 450);
 	}
 	
-	public void draw(Graphics2D g) 
+	public void draw(Graphics2D g)
 	{
 		g.setColor(Color.GREEN);
-		for(int i = 0; i < wall.size(); i++) 
+		
+		for(int i = 0; i < wall.size(); i++)
 		{
 			g.fill(wall.get(i));
 		}
 	}
 	
-	public void basicBlocks(int xPos, int yPos) 
+	public void basicBlocks(int xPos, int yPos)
 	{
-		int wallwidth = 3;
+		int wallWidth = 3;
 		int x = 0;
 		int y = 0;
 		
-		for(int i = 0; i < 13; i++) 
+		for(int i = 0; i < 13; i++)
 		{
-			if((14 + (i * 2) + wallwidth < 22 + wallwidth)) 
+			if((14 + (i * 2) + wallWidth < 22 + wallWidth))
 			{
-				row(14 + (i * 2) + wallwidth, xPos - (i * 3), yPos + (i * 3));
+				row(14 + (i * 2) + wallWidth, xPos - (i * 3), yPos + (i * 3));
 				x = (i * 3) + 3;
 			}
-			else 
+			else
 			{
-				row(22 + wallwidth, xPos - x, yPos + (i * 3));
+				row(22 + wallWidth, xPos - x, yPos + (i * 3));
 				y = (i * 3);
 			}
-			
 		}
 		
-		//lh
-		for(int i = 0; i < 5; i++) 
+		for(int i = 0; i < 5; i++)
 		{
-			row(8 + wallwidth - i, xPos - x, (yPos + y) + (i * 3));
+			row(8 + wallWidth - i, xPos - x, (yPos + y) + (i * 3));
 		}
 		
-		//rh
-		for(int i = 0; i < 5; i++) 
+		for(int i = 0; i < 5; i++)
 		{
-			row(8 + wallwidth - i, (xPos - x) + (14 * 3) + (i * 3), (yPos + y) + (i * 3));
+			row(8 + wallWidth - i, (xPos - x + (14 * 3)) + (i * 3), (yPos + y) + (i * 3));
 		}
-		
 	}
 	
-	
-	
-	public void row(int rows, int xPos, int yPos) 
+	public void row(int rows, int xPos, int yPos)
 	{
-		for(int i = 0; i < rows; i++) 
+		for(int i = 0; i < rows; i++)
 		{
 			Rectangle brick = new Rectangle(xPos + (i * 3), yPos, 3, 3);
 			wall.add(brick);
 		}
 	}
 	
-	public void reset() 
+	public void reset()
 	{
 		wall.clear();
 		

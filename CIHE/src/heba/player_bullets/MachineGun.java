@@ -7,21 +7,22 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import heba.display.Display;
 import heba.game_screen.BasicBlocks;
+import heba.random.Bullet_Value;
 
 public class MachineGun extends PlayerWeaponType
 {
-
+	
+	private BufferedImage pSprite;
 	private Rectangle bullet;
 	private final double speed = 2.5d;
-	private BufferedImage bSprite;
-
 	
-	public MachineGun(double xPos, double yPos, int width, int height) 
+	public MachineGun(double xPos, double yPos, int width,int height)
 	{
 		this.setxPos(xPos);
 		this.setyPos(yPos);
@@ -29,13 +30,15 @@ public class MachineGun extends PlayerWeaponType
 		this.setHeight(height);
 		
 		this.bullet = new Rectangle((int) getxPos(),(int) getyPos(), getWidth(), getHeight());
-		//add image here with try and catch
 		
-		try 
-		{
-			URL url = this.getClass().getResource("/heba/images/hebachicken.png");
-			bSprite = ImageIO.read(url);
-		}catch(IOException e){};
+		
+			try
+			{
+				URL url = this.getClass().getResource("/heba/images/bullet.png");
+				pSprite = ImageIO.read(url);
+			}
+			catch(IOException e){};
+		
 		
 	}
 	
@@ -44,9 +47,7 @@ public class MachineGun extends PlayerWeaponType
 	{
 		if(bullet == null)
 			return;
-		
-		g.drawImage(bSprite,(int) xPos,(int) yPos, width, height, null);
-		//would comment off if pic and use draw image
+		g.drawImage(pSprite,(int) xPos,(int) yPos, width, height, null);
 		//g.setColor(Color.GREEN);
 		//g.fill(bullet);
 	}
@@ -57,11 +58,10 @@ public class MachineGun extends PlayerWeaponType
 		if(bullet == null)
 			return;
 		
-		this.setyPos(getyPos()- (delta * speed));
+		this.setyPos(getyPos() - (delta * speed));
 		bullet.y = (int) this.getyPos();
 		wallCollide(blocks);
 		isOutofBounds();
-		
 	}
 
 	@Override
@@ -69,6 +69,7 @@ public class MachineGun extends PlayerWeaponType
 	{
 		if(this.bullet == null)
 			return false;
+		
 		if(bullet.intersects(rect))
 		{
 			this.bullet = null;
@@ -85,7 +86,7 @@ public class MachineGun extends PlayerWeaponType
 	}
 
 	@Override
-	public boolean destroy() 
+	public boolean destory() 
 	{
 		if(bullet == null)
 			return true;
@@ -96,14 +97,13 @@ public class MachineGun extends PlayerWeaponType
 	@Override
 	protected void wallCollide(BasicBlocks blocks) 
 	{
-		for(int i = 0; i < blocks.wall.size(); i++) 
+		for(int i = 0; i < blocks.wall.size(); i++)
 		{
-			if(bullet.intersects(blocks.wall.get(i))) 
+			if(bullet.intersects(blocks.wall.get(i)))
 			{
 				blocks.wall.remove(i);
 				bullet = null;
 				return;
-
 			}
 		}
 	}
@@ -113,10 +113,19 @@ public class MachineGun extends PlayerWeaponType
 	{
 		if(this.bullet == null)
 			return;
+		
 		if(bullet.y < 0 || bullet.y > Display.HEIGHT || bullet.x < 0 || bullet.x > Display.WIDTH)
 		{
 			bullet = null;
 		}
 	}
-
+	
+	public int bv() 
+	{
+		int max  = 10;
+		int min  = 1;
+		Random rand = new Random();
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+		return randomNum;
+	}
 }

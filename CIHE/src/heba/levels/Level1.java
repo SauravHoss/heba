@@ -1,5 +1,6 @@
 package heba.levels;
 
+
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
@@ -7,25 +8,27 @@ import heba.enemy_types.EnemyType;
 import heba.enemy_types.EnemyTypeBasic;
 import heba.game_screen.BasicBlocks;
 import heba.game_screen.Player;
+import heba.handler.EnemyBulletHandler;
+import heba.sound.Sound;
 
 public class Level1 implements SuperLevel
 {
 
 	private Player player;
-	private ArrayList<EnemyType> enemies= new ArrayList<EnemyType>();
+	private ArrayList<EnemyType> enemies = new ArrayList<EnemyType>();
+	private EnemyBulletHandler bulletHandler;
 	
-	public Level1(Player player) 
+	private Sound beep, boop;
+	private boolean beepboop;
+	
+	public Level1(Player player, EnemyBulletHandler bulletHandler)
 	{
 		this.player = player;
+		this.bulletHandler = bulletHandler;
+		addEnemies();
 		
-		for(int i = 0; i < 5; i++) 
-		{
-			for(int j = 0; j < 10; j++) 
-			{
-				EnemyType e = new EnemyTypeBasic(150 + (j  *  40), 25 + (i * 40), 25, 25, "/heba/images/hebachickyexp.png"); // fix the spacing
-				enemies.add(e);
-			}
-		}
+		beep = new Sound("/heba/sounds/beep.wav");
+		boop = new Sound("/heba/sounds/boop.wav");
 	}
 	
 	@Override
@@ -34,10 +37,11 @@ public class Level1 implements SuperLevel
 		if(enemies == null)
 			return;
 		
-		for(int i = 0; i < enemies.size(); i++) 
+		for(int i = 0; i < enemies.size(); i++)
 		{
 			enemies.get(i).draw(g);
 		}
+		bulletHandler.draw(g);
 	}
 
 	@Override
@@ -46,16 +50,16 @@ public class Level1 implements SuperLevel
 		if(enemies == null)
 			return;
 		
-		for(int i = 0; i < enemies.size(); i++) 
+		for(int i = 0; i < enemies.size(); i++)
 		{
 			enemies.get(i).update(delta, player, blocks);
 		}
-		
-		for(int i = 0; i < enemies.size(); i++) 
+		for(int i = 0; i < enemies.size(); i++)
 		{
 			enemies.get(i).collide(i, player, blocks, enemies);
 		}
 		hasDirectionChange(delta);
+		bulletHandler.update(delta, blocks, player);
 	}
 
 	@Override
@@ -64,34 +68,41 @@ public class Level1 implements SuperLevel
 		if(enemies == null)
 			return;
 		
-		for(int i = 0; i < enemies.size(); i++) 
+		for(int i = 0; i < enemies.size(); i++)
 		{
-			if(enemies.get(i).isOutofBounds())
+			if(enemies.get(i).isOutOfBounds())
 			{
-				changeDirectionAllEnemys(delta);
+				changeDurectionAllEnemys(delta);
 			}
-				
 		}
 	}
 
 	@Override
-	public void changeDirectionAllEnemys(double delta) 
-	{		
-		for(int i = 0; i < enemies.size(); i++) 
+	public void changeDurectionAllEnemys(double delta) 
+	{
+		for(int i = 0; i < enemies.size(); i++)
 		{
 			enemies.get(i).changeDirection(delta);
 		}
-		
+		if (beepboop) 
+		{
+			beepboop = false;
+			boop.play();
+		} else 
+		{
+			beepboop = true;
+			beep.play();
+		}
 	}
 
 	@Override
 	public boolean isGameOver() 
 	{
-		return false;
+		return player.getHealth() <= 0;
 	}
 
 	@Override
-	public void destroy() 
+	public void destory() 
 	{
 		
 	}
@@ -99,7 +110,28 @@ public class Level1 implements SuperLevel
 	@Override
 	public void reset() 
 	{
+		player.reset();
+		enemies.clear();
+		addEnemies();
 		
+		bulletHandler.reset();
+	}
+	
+	public void addEnemies() 
+	{
+		for(int y = 0; y < 5; y++)
+		{
+			for(int x = 0; x < 10; x++)
+			{
+				EnemyType e = new EnemyTypeBasic(150 + (x * 40), 25 + (y * 40), 1 , 3, bulletHandler);
+				enemies.add(e);
+			}
+		}
 	}
 
+	@Override
+	public boolean isComplete() 
+	{
+		return enemies.isEmpty();
+	}
 }

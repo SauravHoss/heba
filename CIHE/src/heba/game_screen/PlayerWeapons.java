@@ -1,45 +1,69 @@
 package heba.game_screen;
 
+
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
+import heba.explosion.ExplosionManager;
 import heba.player_bullets.MachineGun;
 import heba.player_bullets.PlayerWeaponType;
+import heba.sound.Sound;
 import heba.timer.Timer;
 
 public class PlayerWeapons 
 {
 	private Timer timer;
+	private ExplosionManager explosionManager;
 	public ArrayList<PlayerWeaponType> weapons = new ArrayList<PlayerWeaponType>();
+	private Sound shootSound;
 	
-	public PlayerWeapons() 
+	public PlayerWeapons()
 	{
+		explosionManager = new ExplosionManager();
 		timer = new Timer();
+		shootSound = new Sound("/heba/sounds/shoot.wav");
 	}
 	
-	
-	public void draw(Graphics2D g) 
+	public void draw(Graphics2D g)
 	{
-		for(int i = 0; i < weapons.size(); i++) 
+		
+		explosionManager.draw(g);
+		for(int i = 0; i < weapons.size(); i++)
 		{
 			weapons.get(i).draw(g);
 		}
 	}
 	
-	public void update(double delta, BasicBlocks blocks) 
+	public void update(double delta, BasicBlocks blocks)
 	{
-		for(int i = 0; i < weapons.size(); i++) 
+		
+		explosionManager.update(delta);
+		for(int i = 0; i < weapons.size(); i++)
 		{
 			weapons.get(i).update(delta, blocks);
-			if(weapons.get(i).destroy()) 
+			if(weapons.get(i).destory()) 
+			{
+				ExplosionManager.createPixelExplosion(weapons.get(i).getxPos(), weapons.get(i).getyPos());
 				weapons.remove(i);
+			}
 		}
 	}
 	
-	public void shootBullet(double xPos, double yPos, int width, int height) 
+	public void shootBullet(double xPos, double yPos, int width, int height)
 	{
 		if(timer.timerEvent(250))
+		{
+			if (shootSound.isPlaying()) 
+			{
+				shootSound.stop();
+			}
+			shootSound.play();
 			weapons.add(new MachineGun(xPos + 22, yPos + 15, width, height));
+		}
 	}
-	
+
+	public void reset() 
+	{
+		weapons.clear();
+	}
 }
