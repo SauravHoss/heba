@@ -3,8 +3,14 @@ package heba.display;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import heba.state.StateMachine;
@@ -12,6 +18,7 @@ import heba.state.StateMachine;
 public class Display extends Canvas implements Runnable 
 {
 	private static final long serialVersionUID = 1L;
+	private BufferedImage bg;
 
 	public static void main(String[] args) 
 	{
@@ -119,6 +126,14 @@ public class Display extends Canvas implements Runnable
 				g.setColor(Color.PINK);
 				g.fillRect(0, 0, WIDTH + 50, HEIGHT + 50);
 				
+				try
+				{
+					URL url = this.getClass().getResource("/heba/images/bg.png");
+					bg = ImageIO.read(url);
+				}
+				catch(IOException e){};
+				
+				g.drawImage(bg, 0, 0, WIDTH, HEIGHT,null);
 				state.draw(g);
 
 				g.dispose();

@@ -19,7 +19,7 @@ public class BasicBlocks
 	
 	public void draw(Graphics2D g)
 	{
-		g.setColor(Color.GREEN);
+		g.setColor(Color.CYAN);
 		
 		for(int i = 0; i < wall.size(); i++)
 		{

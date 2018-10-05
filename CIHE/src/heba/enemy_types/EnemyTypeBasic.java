@@ -69,10 +69,11 @@ public class EnemyTypeBasic extends EnemyType
 	@Override
 	public void changeDirection(double delta) 
 	{
+		
 		speed *= -1.15d;
 		enemySprite.setxPos(enemySprite.getxPos() - (delta * speed));
 		this.getRect().x = (int) enemySprite.getxPos();
-		
+	
 	//  will add back if want to come down too?
 	//	enemySprite.setyPos(enemySprite.getyPos() + (delta * 15));
 	//	this.getRect().y = (int) enemySprite.getyPos();
@@ -115,7 +116,7 @@ public class EnemyTypeBasic extends EnemyType
 				enemySprite.resetLimit();
 				enemySprite.setAnimationSpeed(120);
 				enemySprite.setPlay(true, true);
-				GameScreen.SCORE += 8;
+				GameScreen.SCORE += 7;
 				return true;
 			}
 		}
