@@ -31,7 +31,7 @@ public class GameScreen extends SuperStateMachine
 		super(stateMachine);
 		blocks = new BasicBlocks();
 		bulletHandler = new EnemyBulletHandler();
-		player = new Player(Display.WIDTH/2-50, Display.HEIGHT-75, 50, 50, blocks);
+		player = new Player(Display.WIDTH/2-50, Display.HEIGHT-75, 70, 70, blocks);
 		level = new Level1(player, bulletHandler);
 	}
 	
@@ -69,7 +69,7 @@ public class GameScreen extends SuperStateMachine
 		g.setColor(Color.white);
 		g.drawString("Score: " + SCORE, 5, 15);
 		
-		g.setColor(Color.red);
+		g.setColor(Color.green);
 		g.drawString("Health: " + player.getHealth(), 5, 35);
 		
 		blocks.draw(g);

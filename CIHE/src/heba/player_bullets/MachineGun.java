@@ -34,7 +34,7 @@ public class MachineGun extends PlayerWeaponType
 		
 			try
 			{
-				URL url = this.getClass().getResource("/heba/images/bullet.png");
+				URL url = this.getClass().getResource("/heba/images/bull3.png");
 				pSprite = ImageIO.read(url);
 			}
 			catch(IOException e){};

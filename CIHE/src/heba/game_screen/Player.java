@@ -41,7 +41,7 @@ public class Player implements KeyListener
 		
 		try
 		{
-			URL url = this.getClass().getResource("/heba/images/pl2.png");
+			URL url = this.getClass().getResource("/heba/images/hebachicky.png");
 			pSprite = ImageIO.read(url);
 		}catch(IOException e){};
 		

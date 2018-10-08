@@ -31,7 +31,7 @@ public class EnemyTypeBasic extends EnemyType
 	{
 		super(bulletHandler);
 		
-		enemySprite = new SpriteAnimation(xPos, yPos, rows, columns, 300, "/heba/images/hebachickyexp.png");
+		enemySprite = new SpriteAnimation(xPos, yPos, rows, columns, 300, "/heba/images/hebachickyexp2.png");
 		enemySprite.setWidth(25);
 		enemySprite.setHeight(25);
 		enemySprite.setLimit(2);

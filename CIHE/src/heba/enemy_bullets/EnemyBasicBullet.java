@@ -3,6 +3,11 @@ package heba.enemy_bullets;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
 
 import heba.display.Display;
 import heba.game_screen.BasicBlocks;
@@ -14,12 +19,20 @@ public class EnemyBasicBullet extends EnemyWeaponType
 	private Rectangle bullet;
 	private double speed = 2.5d;
 	private int xPos, yPos;
+	private BufferedImage pSprite;
 	
 	public EnemyBasicBullet(double xPos, double yPos) 
 	{
 		bullet = new Rectangle((int) xPos, (int) yPos, 5, 5);
 		setxPos((int) xPos); 
 		setyPos((int) yPos); 
+		
+		try
+		{
+			URL url = this.getClass().getResource("/heba/images/eb2.png");
+			pSprite = ImageIO.read(url);
+		}
+		catch(IOException e){};
 	}
 	
 	@Override
@@ -30,8 +43,10 @@ public class EnemyBasicBullet extends EnemyWeaponType
 			return;
 		}
 		
-		g.setColor(Color.RED);
-		g.fill(bullet);
+		g.drawImage(pSprite,(int) xPos,(int) yPos, 40, 40, null);
+
+		//g.setColor(Color.RED);
+		//g.fill(bullet);
 	}
 
 	@Override
