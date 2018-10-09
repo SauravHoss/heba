@@ -39,7 +39,6 @@ public class MenuScreen extends SuperStateMachine implements KeyListener
 		g.drawString(tittle, ((Display.WIDTH/2)-(tittleWidth/2))-2, (Display.HEIGHT/2)-123);
 		g.setColor(Color.pink);
 		g.drawString(tittle, (Display.WIDTH/2)-(tittleWidth/2), (Display.HEIGHT/2)-125);
-		
 		g.setFont(startFont);
 		g.setColor(Color.white);
 		int startWidth = g.getFontMetrics().stringWidth(start);

@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import heba.state.StateMachine;
@@ -26,6 +28,8 @@ public class Display extends Canvas implements Runnable
 		JFrame frame = new JFrame();
 		frame.add(display);
 		frame.pack();
+		ImageIcon img = new ImageIcon("/heba/images/iconpic.png");
+		frame.setIconImage(img.getImage());
 		frame.setTitle("Chicken Invaders: Heba Edition");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
@@ -81,6 +85,7 @@ public class Display extends Canvas implements Runnable
 	@Override
 	public void run() 
 	{
+	
 		long timer = System.currentTimeMillis();
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 60;
