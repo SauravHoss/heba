@@ -22,7 +22,7 @@ public class GameScreen extends SuperStateMachine
 	
 	public static int SCORE = 0;
 	
-	private Font gameScreen = new Font("Arial", Font.PLAIN, 48);
+	private Font gameScreen = new Font("Trebuchet MS", Font.PLAIN, 48);
 	private TickTimer gameOverTimer = new TickTimer(180);
 	private TickTimer completeTimer = new TickTimer(180);
 	

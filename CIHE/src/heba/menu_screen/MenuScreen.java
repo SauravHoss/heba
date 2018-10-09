@@ -14,8 +14,8 @@ import heba.state.SuperStateMachine;
 public class MenuScreen extends SuperStateMachine implements KeyListener 
 {
 
-	private Font tittleFont = new Font("Arial", Font.PLAIN, 32);
-	private Font startFont = new Font("Arial", Font.PLAIN, 16);
+	private Font tittleFont = new Font("Trebuchet MS", Font.ITALIC, 44);
+	private Font startFont = new Font("Verdana", Font.PLAIN, 22);
 	private String tittle = "Chicken Invaders: Heba Edition";
 	private String start = "Press Enter";
 	
@@ -35,9 +35,9 @@ public class MenuScreen extends SuperStateMachine implements KeyListener
 	{
 		g.setFont(tittleFont);
 		int tittleWidth = g.getFontMetrics().stringWidth(tittle);
-		g.setColor(Color.yellow);
+		g.setColor(Color.magenta);
 		g.drawString(tittle, ((Display.WIDTH/2)-(tittleWidth/2))-2, (Display.HEIGHT/2)-123);
-		g.setColor(Color.green);
+		g.setColor(Color.pink);
 		g.drawString(tittle, (Display.WIDTH/2)-(tittleWidth/2), (Display.HEIGHT/2)-125);
 		
 		g.setFont(startFont);
